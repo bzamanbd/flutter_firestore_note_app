@@ -1,13 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_firestore_note_app/screens/login_screen.dart';
+import '../services/auth_service.dart';
 import 'package:flutter/material.dart';
-
-import 'screens/addnote_screen.dart';
-import 'screens/edit_note_screen.dart';
 import 'screens/home_screen.dart';
 
-void main() => runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  final String _title = 'NoteApp';
+  final String _title = 'Email Auth';
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -17,14 +21,17 @@ class MyApp extends StatelessWidget {
       title: _title,
       theme: ThemeData(
         brightness: Brightness.dark,
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.pink
       ),
-      home: HomeScreen(title: _title,),
-      routes: {
-        '/home':(_)=>HomeScreen(title: _title),
-        '/addnote':(_)=>const AddNoteScreen(),
-        '/editnote':(_)=>const EditNoteScreen(),
-      },
+      home: StreamBuilder(
+        stream: AuthService().firebaseAuth.authStateChanges(),
+        builder: (context,AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return HomeScreen(snapshot.data);
+          }
+          return  const LoginScreen();
+        },
+      ),
     );
   }
 }

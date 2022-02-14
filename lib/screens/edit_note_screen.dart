@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firestore_note_app/models/note_model.dart';
+import 'package:flutter_firestore_note_app/services/firestore_service.dart';
 
+// ignore: must_be_immutable
 class EditNoteScreen extends StatefulWidget {
-  const EditNoteScreen({Key? key}) : super(key: key);
+  NoteModel note;
+  EditNoteScreen({Key? key, required this.note}) : super(key: key);
 
   @override
   State<EditNoteScreen> createState() => _EditNoteScreenState();
 }
 
 class _EditNoteScreenState extends State<EditNoteScreen> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+  bool loading = false;
+  @override
+  void initState() {
+    titleController.text = widget.note.title;
+    descController.text = widget.note.description;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -18,9 +32,39 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
           elevation: 0,
           actions: [
             IconButton(
-              onPressed: (){},
-              icon: const Icon(Icons.delete, color: Colors.red,)
-            ),
+                onPressed: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          alignment: Alignment.center,
+                          title: const Text('Please Confirm'),
+                          content: const Text('Are you sure to delete?'),
+                          actions: [
+                            TextButton(
+                                onPressed: () async {
+                                  await FirestoreService()
+                                      .deleteNote(widget.note.id);
+                                  //to close the dialog//
+                                  Navigator.pop(context);
+                                  //to close the edite screen//
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('Yes')),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('No')),
+                          ],
+                          elevation: 5,
+                        );
+                      });
+                },
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                )),
           ],
         ),
         body: SingleChildScrollView(
@@ -41,8 +85,9 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                 SizedBox(
                   height: size.height / 60,
                 ),
-                const TextField(
-                  decoration: InputDecoration(
+                TextField(
+                  controller: titleController,
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),
                   minLines: 1,
@@ -59,8 +104,9 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                 SizedBox(
                   height: size.height / 60,
                 ),
-                const TextField(
-                  decoration: InputDecoration(
+                TextField(
+                  controller: descController,
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),
                   minLines: 5,
@@ -69,21 +115,45 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                 SizedBox(
                   height: size.height / 30,
                 ),
-                SizedBox(
-                  width: size.width,
-                  height: size.height / 10,
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'Update Note',
-                        style: TextStyle(fontSize: 19),
+                loading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SizedBox(
+                        width: size.width,
+                        height: size.height / 10,
+                        child: ElevatedButton(
+                            onPressed: () async {
+                              if (titleController.text == '' ||
+                                  descController.text == '') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text('All fields are required')));
+                              } else {
+                                setState(() {
+                                  loading = true;
+                                });
+                                await FirestoreService().updateNote(
+                                    widget.note.id,
+                                    titleController.text,
+                                    descController.text);
+                                setState(() {
+                                  loading = false;
+                                });
+                                Navigator.pop(context);
+                              }
+                            },
+                            child: const Text(
+                              'Update Note',
+                              style: TextStyle(fontSize: 19),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                primary: Colors.teal,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10))))),
                       ),
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.teal,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))))),
-                ),
               ],
             ),
           ),
