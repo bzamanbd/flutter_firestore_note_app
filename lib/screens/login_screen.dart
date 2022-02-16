@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import '../screens/signup_screen.dart';
 import '../screens/home_screen.dart';
 import '../services/auth_service.dart';
-import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -13,12 +13,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  ///controller for email field///
   TextEditingController emailController = TextEditingController();
+  ///controller for password field///
   TextEditingController passController = TextEditingController();
-  bool loading = false; /*ForCreatingProgressIndicator*/
+  ///to show loading indicator//
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
+    ///for creating responsive height & width values///
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -79,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           content:
                                               Text('All fields are required')));
                                 } else {
+                                  ///to login with email and password///
                                   User? result = await AuthService().login(
                                       emailController.text,
                                       passController.text,
@@ -135,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           setState(() {
                             loading = true;
                           });
-
+                          ///login with google account///
                           User? result =
                               await AuthService().googleLogin(context);
                           if (result != null) {

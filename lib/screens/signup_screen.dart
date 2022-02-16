@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_firestore_note_app/screens/login_screen.dart';
+import '../screens/login_screen.dart';
 import '../screens/home_screen.dart';
 import '../services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -15,12 +15,17 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  ///controller for email field///
   TextEditingController emailController = TextEditingController();
+  ///controller for password field///
   TextEditingController passController = TextEditingController();
+  ///controller for confirm password field///
   TextEditingController cnfPassController = TextEditingController();
-  bool loading = false; /*ForCreatingProgressIndicator*/
+  ///to show loading indicator//
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
+    ///for creating responsive height & width values///
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -99,6 +104,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                           content:
                                               Text("password didn't match")));
                                 } else {
+                                  ///to register user with email and password///
                                   User? result = await AuthService().register(
                                       emailController.text,
                                       passController.text,
@@ -153,6 +159,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           setState(() {
                             loading = true;
                           });
+                          ///to login using google account///
                           User? result =
                               await AuthService().googleLogin(context);
                           if (result != null) {

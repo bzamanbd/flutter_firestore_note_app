@@ -1,12 +1,13 @@
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class StorageService {
+  ///instance of storage///
   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
-///to uploading images//
+  ///to uploading images//
   Future<void> uploadImage(String inputSource, BuildContext context) async {
     final picker = ImagePicker();
     final XFile? pickedImage = await picker.pickImage(
@@ -30,7 +31,6 @@ class StorageService {
     }
   }
 
-
 // /to retrive or show image in UI from firebase storage//
   Future<List> loadImages() async {
     List<Map> files = [];
@@ -39,12 +39,15 @@ class StorageService {
     await Future.forEach(allFiles, (Reference file) async {
       final String fileUrl = await file.getDownloadURL();
       files.add({
-        "url":fileUrl,
-        "path":file.fullPath,
+        "url": fileUrl,
+        "path": file.fullPath,
       });
     });
     return files;
   }
 
-
+  ///to delete images //
+  Future<void> deleteImages(String ref) async {
+    await firebaseStorage.ref(ref).delete();
+  }
 }

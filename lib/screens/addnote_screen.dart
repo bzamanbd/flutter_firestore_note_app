@@ -1,9 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../services/firestore_service.dart';
 
 // ignore: must_be_immutable
 class AddNoteScreen extends StatefulWidget {
+  ///to get the user's uid///
   User user;
   // ignore: use_key_in_widget_constructors
   AddNoteScreen(this.user);
@@ -13,12 +14,15 @@ class AddNoteScreen extends StatefulWidget {
 }
 
 class _AddNoteScreenState extends State<AddNoteScreen> {
+  ///controller for title field///
   TextEditingController titleController = TextEditingController();
+  ///controller for description field///
   TextEditingController descController = TextEditingController();
   // /ForCreatingProgressIndicator
-  bool loading = false; 
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
+    ///for creating responsive height & width values///
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(

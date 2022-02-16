@@ -9,6 +9,7 @@ class UploadImageScreen extends StatefulWidget {
 }
 
 class _UploadImageScreenState extends State<UploadImageScreen> {
+  ///to show loading indicator//
   bool loading = false;
   @override
   Widget build(BuildContext context) {
@@ -79,13 +80,25 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
                         final Map image = snapshot.data[index];
                         return Row(
                           children: [
-                            Expanded(child:Card(
+                            Expanded(
+                                child: Card(
                               child: SizedBox(
-                                height: size.height/2.5,
+                                height: size.height / 2.5,
                                 child: Image.network(image['url']),
                               ),
                             )),
-                            IconButton(onPressed: (){}, icon: const Icon(Icons.delete,color: Colors.red,))
+                            IconButton(
+                                onPressed: () async {
+                                  await StorageService()
+                                      .deleteImages(image['path']);
+                                  setState(() {});
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('Image is deleted successfully')));
+                                },
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ))
                           ],
                         );
                       },

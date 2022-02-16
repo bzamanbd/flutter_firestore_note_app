@@ -1,12 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
-  //Creating firebaseAuth instance//
+  ///Creating firebaseAuth instance///
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  //for new user registration//
+  ///for new user registration///
   Future<User? /*CanBeNull*/ > register(String email, password,
       BuildContext context /*EnableContextBuilding*/) async {
     try {
@@ -27,7 +27,7 @@ class AuthService {
     return null; /*ForNullSefty*/
   }
 
-  //Login user//
+  ///Login user///
   Future<User? /*CanBeNull*/ > login(String email, password,
       BuildContext context /*EnableContextBuilding*/) async {
     try {
@@ -48,22 +48,22 @@ class AuthService {
     return null; /*ForNullSefty*/
   }
 
-  //for google login//
+  ///for google login///
   Future<User? /*CanBeNull*/ > googleLogin(
       BuildContext context /*EnableContextBuilding*/) async {
     try {
-      //Triggering the authentication dialog flow//
-      //this code brings out the popup dialog//
+      ///Triggering the authentication dialog flow//
+      ///this code brings out the popup dialog///
       final GoogleSignInAccount? /*CanBeNull*/ googleUser =
           await GoogleSignIn().signIn();
       if (googleUser != null) {
-        //Obtaining the auth details from the request//
+        ///Obtaining the auth details from the request///
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
-        //Creating a new credential//
+        ///Creating a new credential///
         final credential = GoogleAuthProvider.credential(
             accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-        //Once signed in, return the UserCredential//
+        ///Once signed in, return the UserCredential///
         UserCredential userCredential =
             await firebaseAuth.signInWithCredential(credential);
         return userCredential.user;
@@ -77,7 +77,7 @@ class AuthService {
     return null; /*ForNullSefty*/
   }
 
-  //for Logout//
+  ///for Logout///
   Future exit() async {
     await firebaseAuth.signOut(); /*ForEmailAndPass*/
     await GoogleSignIn().signOut(); /*ForGoogle*/

@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
+  ///instance of firestore///
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  //to create and save note//
+  ///to create and save note///
   Future insertNote(String title, description, userid) async {
     try {
       await firestore.collection('notes').add({
@@ -17,7 +18,7 @@ class FirestoreService {
     }
   }
 
-  //to update the exist note//
+  ///to update the existing note//
   Future updateNote(String docId, title, description) async {
     try {
       await firestore.collection('notes').doc(docId).update({
@@ -29,7 +30,7 @@ class FirestoreService {
     }
   }
 
-  //to update the exist note//
+  ///to delete existing note//
   Future deleteNote(String docId) async {
     try {
       await firestore.collection('notes').doc(docId).delete();

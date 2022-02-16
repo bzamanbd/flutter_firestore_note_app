@@ -25,7 +25,10 @@ class MyApp extends StatelessWidget {
         stream: AuthService().firebaseAuth.authStateChanges(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
+            ///use homscreen to view the user's notes//
             // return HomeScreen(snapshot.data);
+
+            ///use uploadimagescreen to fetch images from cloudStorage
             return const UploadImageScreen();
           }
           return const LoginScreen();

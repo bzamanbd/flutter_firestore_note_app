@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_firestore_note_app/models/note_model.dart';
-import 'package:flutter_firestore_note_app/services/firestore_service.dart';
+import '../models/note_model.dart';
+import '../services/firestore_service.dart';
 
 // ignore: must_be_immutable
 class EditNoteScreen extends StatefulWidget {
+  ///to use the porperties of NoteModel///
   NoteModel note;
   EditNoteScreen({Key? key, required this.note}) : super(key: key);
 
@@ -12,9 +13,16 @@ class EditNoteScreen extends StatefulWidget {
 }
 
 class _EditNoteScreenState extends State<EditNoteScreen> {
+  ///controller for title field///
   TextEditingController titleController = TextEditingController();
+
+  ///controller for description field///
   TextEditingController descController = TextEditingController();
+
+  ///to show loading indicator//
   bool loading = false;
+
+  ///to show the existing values of title and description///
   @override
   void initState() {
     titleController.text = widget.note.title;
@@ -24,6 +32,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ///for creating responsive height & width values///
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -33,6 +42,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
           actions: [
             IconButton(
                 onPressed: () async {
+                  ///to open the popup of dialog///
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -43,17 +53,18 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                           actions: [
                             TextButton(
                                 onPressed: () async {
+                                  ///to delete note by id///
                                   await FirestoreService()
                                       .deleteNote(widget.note.id);
-                                  //to close the dialog//
+                                  ///to close the dialog///
                                   Navigator.pop(context);
-                                  //to close the edite screen//
+                                  ///to close the edite screen///
                                   Navigator.pop(context);
                                 },
                                 child: const Text('Yes')),
                             TextButton(
                                 onPressed: () {
-                                  //to close the dialog//
+                                  ///to close the dialog///
                                   Navigator.pop(context);
                                 },
                                 child: const Text('No')),
@@ -135,6 +146,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                                 setState(() {
                                   loading = true;
                                 });
+                                ///to update the  note by id///
                                 await FirestoreService().updateNote(
                                     widget.note.id,
                                     titleController.text,

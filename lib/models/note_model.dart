@@ -15,7 +15,7 @@ class NoteModel {
     required this.date,
   });
 
-  //taking the snapshots of document and keeping the values//
+  ///asigning all values of document into NoteModel with the help of DocumentSnapshot///
   factory NoteModel.fromJson(DocumentSnapshot snapshot) {
     return NoteModel(
         id: snapshot.id,
