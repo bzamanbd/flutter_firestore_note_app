@@ -53,6 +53,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                                 child: const Text('Yes')),
                             TextButton(
                                 onPressed: () {
+                                  //to close the dialog//
                                   Navigator.pop(context);
                                 },
                                 child: const Text('No')),

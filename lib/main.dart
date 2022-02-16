@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_firestore_note_app/screens/login_screen.dart';
+import '../screens/login_screen.dart';
+import '../screens/upload_image.dart';
 import '../services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+// import 'screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,17 +20,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: _title,
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.pink
-      ),
+      theme: ThemeData(brightness: Brightness.dark, primarySwatch: Colors.pink),
       home: StreamBuilder(
         stream: AuthService().firebaseAuth.authStateChanges(),
-        builder: (context,AsyncSnapshot snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            return HomeScreen(snapshot.data);
+            // return HomeScreen(snapshot.data);
+            return const UploadImageScreen();
           }
-          return  const LoginScreen();
+          return const LoginScreen();
         },
       ),
     );

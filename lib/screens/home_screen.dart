@@ -13,7 +13,8 @@ import '../services/firestore_service.dart';
 class HomeScreen extends StatelessWidget {
   User user;
   HomeScreen(this.user, {Key? key}) : super(key: key);
-  bool loading = false; /*ForCreatingProgressIndicator*/
+ ///ForCreatingProgressIndicator//
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -83,13 +84,13 @@ class HomeScreen extends StatelessWidget {
                                           onPressed: () async {
                                             await FirestoreService()
                                                 .deleteNote(note.id);
-                                            //to close the dialog//
+                                            ///to close the dialog//
                                             Navigator.pop(context);
                                           },
                                           child: const Text('Yes')),
                                       TextButton(
                                           onPressed: () {
-                                            //to close the dialog//
+                                            ///to close the dialog//
                                             Navigator.pop(context);
                                           },
                                           child: const Text('No')),

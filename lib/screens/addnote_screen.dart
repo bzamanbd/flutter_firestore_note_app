@@ -15,7 +15,8 @@ class AddNoteScreen extends StatefulWidget {
 class _AddNoteScreenState extends State<AddNoteScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
-  bool loading = false; /*ForCreatingProgressIndicator*/
+  // /ForCreatingProgressIndicator
+  bool loading = false; 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
