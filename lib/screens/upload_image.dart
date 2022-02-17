@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import '../services/storage_service.dart';
+///using for cached image///
+import 'package:cached_network_image/cached_network_image.dart';
 
-class UploadImageScreen extends StatefulWidget {
+class UploadImageScreen extends StatefulWidget{
   const UploadImageScreen({Key? key}) : super(key: key);
 
   @override
   State<UploadImageScreen> createState() => _UploadImageScreenState();
 }
 
-class _UploadImageScreenState extends State<UploadImageScreen> {
+class _UploadImageScreenState extends State<UploadImageScreen>{
   ///to show loading indicator//
   bool loading = false;
   @override
@@ -84,7 +86,13 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
                                 child: Card(
                               child: SizedBox(
                                 height: size.height / 2.5,
-                                child: Image.network(image['url']),
+                                ///using cached image///
+                                child: CachedNetworkImage(
+                                  imageUrl: image['url'],
+                                  placeholder: (_, url)=>Image.asset('assets/images/placeholder-image.jpg'),
+                                  errorWidget:(_,url,error)=>const Icon(Icons.error),
+                                  ),
+                                // child: Image.network(image['url']),
                               ),
                             )),
                             IconButton(
